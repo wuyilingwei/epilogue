@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <!-- 三方块：各自径向渐变，中心饱和、向外稍淡 -->
+    <radialGradient id="sqYellow" gradientUnits="userSpaceOnUse" cx="256" cy="128" r="110">
+      <stop offset="0" stop-color="#ffaa33"/>
+      <stop offset="1" stop-color="#ffd08a"/>
+    </radialGradient>
+    <radialGradient id="sqOrange" gradientUnits="userSpaceOnUse" cx="366.851" cy="320" r="110">
+      <stop offset="0" stop-color="#ff7a1f"/>
+      <stop offset="1" stop-color="#ffae70"/>
+    </radialGradient>
+    <radialGradient id="sqRed" gradientUnits="userSpaceOnUse" cx="145.149" cy="320" r="110">
+      <stop offset="0" stop-color="#ff5424"/>
+      <stop offset="1" stop-color="#ff9573"/>
+    </radialGradient>
+    <!-- 连接体（双三角）：自上而下 黄→橙→红 渐变，衔接三方块颜色 -->
+    <linearGradient id="link" gradientUnits="userSpaceOnUse" x1="256" y1="80" x2="256" y2="344">
+      <stop offset="0" stop-color="#ffaa33"/>
+      <stop offset="0.55" stop-color="#ff7a1f"/>
+      <stop offset="1" stop-color="#ff5424"/>
+    </linearGradient>
+    <!-- 三个正方形中心上方 45px(=5/8×72) 处各挖一个 48x8、圆角4 的横条（黑=挖空→透明） -->
+    <mask id="barCut" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <rect width="512" height="512" fill="white"/>
+      <rect x="232"     y="79"  width="48" height="8" rx="4" fill="black"/>
+      <rect x="342.851" y="271" width="48" height="8" rx="4" fill="black"/>
+      <rect x="121.149" y="271" width="48" height="8" rx="4" fill="black"/>
+    </mask>
+  </defs>
+
+  <g mask="url(#barCut)">
+    <!-- 大三角形：顶点在半径 176 处，120° 分布，空心，stroke 24 -->
+    <polygon points="256,80 408.420,344 103.580,344"
+             fill="none" stroke="url(#link)" stroke-width="24" stroke-linejoin="round"/>
+
+    <!-- 小三角形：顶点在半径 64 处，120° 分布，实心，stroke 24 -->
+    <polygon points="256,192 311.426,288 200.574,288"
+             fill="url(#link)" stroke="url(#link)" stroke-width="24" stroke-linejoin="round"/>
+
+    <!-- 三个正方形：上=黄、右下=橙、左下=红 -->
+    <rect x="184"     y="56"  width="144" height="144" rx="16" fill="url(#sqYellow)"/>
+    <rect x="294.851" y="248" width="144" height="144" rx="16" fill="url(#sqOrange)"/>
+    <rect x="73.149"  y="248" width="144" height="144" rx="16" fill="url(#sqRed)"/>
+  </g>
+</svg>

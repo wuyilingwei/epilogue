@@ -1,0 +1,106 @@
+name: Release
+
+# 推送 v* 标签时自动构建全平台发布包并上传到 GitHub Release
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+# 2026-06-16 起 runner 强制 Node 24，提前显式启用消除弃用警告；
+# onnxruntime-node 在 linux x64 的 postinstall 会下载 ~340MB CUDA/TensorRT 二进制 —— 跳过
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  ONNXRUNTIME_NODE_INSTALL_CUDA: skip
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      # 全平台双架构：各 job 使用原生架构 runner，npm ci 天然安装匹配的原生模块（sharp/onnxruntime）
+      matrix:
+        include:
+          - os: macos-latest
+            platform: darwin
+            arch: arm64
+          - os: macos-15-intel
+            platform: darwin
+            arch: x64
+          - os: windows-latest
+            platform: win32
+            arch: x64
+          - os: windows-11-arm
+            platform: win32
+            arch: arm64
+          - os: ubuntu-latest
+            platform: linux
+            arch: x64
+          - os: ubuntu-24.04-arm
+            platform: linux
+            arch: arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        if: ${{ !(matrix.platform == 'win32' && matrix.arch == 'arm64') }}
+        shell: bash
+        # Windows runner 偶发 EPERM 文件锁（杀软/索引），重试一次即过
+        run: npm ci --no-audit --no-fund || npm ci --no-audit --no-fund
+
+      - name: Install dependencies (win-arm64)
+        if: ${{ matrix.platform == 'win32' && matrix.arch == 'arm64' }}
+        shell: bash
+        # ffmpeg-static 无 win-arm64 二进制：跳过 install scripts（electron 二进制由 packager 自下载、
+        # 测试为纯 node），再以 x64 重装 ffmpeg —— ARM Windows 模拟运行 x64 exe，功能完整
+        run: |
+          (npm ci --no-audit --no-fund --ignore-scripts || npm ci --no-audit --no-fund --ignore-scripts)
+          npm_config_arch=x64 npm rebuild ffmpeg-static
+
+      - name: Run tests
+        run: npm test
+
+      - name: Package
+        shell: bash
+        run: bash scripts/pack.sh ${{ matrix.platform }} ${{ matrix.arch }}
+
+      - name: Installer (macOS dmg)
+        if: matrix.platform == 'darwin'
+        run: |
+          mkdir -p dist/installers dmg-root
+          cp -R "dist/Epilogue-darwin-${{ matrix.arch }}/Epilogue.app" dmg-root/
+          ln -s /Applications dmg-root/Applications
+          hdiutil create -volname Epilogue -srcfolder dmg-root -ov -format UDZO \
+            "dist/installers/Epilogue-${{ github.ref_name }}-darwin-${{ matrix.arch }}.dmg"
+
+      # 安装器工具按平台 job 内按需安装（electron-installer-debian 声明仅 darwin/linux，
+      # 放 devDependencies 会让 Windows 的 npm ci 直接 EBADPLATFORM）
+      - name: Installer (Windows Setup.exe)
+        if: matrix.platform == 'win32'
+        shell: bash
+        run: |
+          npm i --no-save electron-winstaller
+          node scripts/installer-win.js ${{ matrix.arch }} ${{ github.ref_name }}
+
+      - name: Installer (Linux deb)
+        if: matrix.platform == 'linux'
+        run: |
+          npm i --no-save electron-installer-debian
+          node scripts/installer-linux.js ${{ matrix.arch }} ${{ github.ref_name }}
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/installers/Epilogue-*.dmg
+            dist/installers/Epilogue-*-Setup.exe
+            dist/installers/Epilogue-*.deb
+          draft: false
+          # 六个并发 job 各自 append 生成说明会重复——发布说明由发布者撰写，CI 不生成不覆盖
+          generate_release_notes: false

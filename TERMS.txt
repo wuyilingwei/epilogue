@@ -1,0 +1,178 @@
+EPILOGUE 服务条款 / TERMS OF SERVICE
+版本 1.1 · 最后更新 / Last updated: 2026-06-12
+
+========================================================================
+中文版
+========================================================================
+
+第一条  定义与接受
+
+1.1 「本软件」指 Epilogue 桌面应用程序及其全部组件，由 Wuyilingwei
+    （「开发者」）发布。
+1.2 「你」指安装、运行或以其他方式使用本软件的个人或实体。
+1.3 首次启动本软件时点击「同意并开始使用」，即表示你已阅读、理解并同意
+    受本条款约束；若不同意，请点击「不同意并退出」并停止使用。
+
+第二条  许可与开源
+
+2.1 本软件依「反劳动剥削许可证 1.1（ALE 1.1）与 GNU 通用公共许可证第 3 版
+    （GPL-3.0）」双重结构发布：ALE 1.1 优先适用，GPL-3.0 授予的全部权利
+    与自由以你完全遵守 ALE 1.1 为严格条件；违反 ALE 1.1 将自动中止本许可
+    授予的全部权利。
+2.2 ALE 1.1 的核心是劳动法合规：其约束主要作用于商业与用工实体（不得诱导
+    放弃劳动权利、不得拖欠工资、不得违法超时用工等）；个人及合规实体的
+    使用、研究、修改与再分发不受额外限制。
+2.3 许可证完整文本（ALE 1.1 与 GPL-3.0 全文）内置于本软件：
+    设置 -> 关于 -> 许可证。
+2.4 在 ALE 1.1 合规的前提下，本条款不限制、亦不取代 GPL-3.0 授予你的
+    任何权利。
+
+第三条  数据与隐私
+
+3.1 本软件不包含任何遥测、统计、广告或「回传」机制；开发者不收集、
+    不接收、也无法访问你的任何数据。
+3.2 你的全部配置、索引记录与向量数据仅保存在你的本机（用户数据目录），
+    随时可在「设置 -> 通用 -> 存储占用」查看与清理。
+3.3 音视频转写默认由本机模型完成，音频内容不离开你的设备。
+
+第四条  第三方 AI 服务
+
+4.1 当你使用摘要、归类、问答、助手对话等 AI 功能时，相关文件的元数据与
+    内容片段会被发送至你所配置（或内置默认）的第三方 AI 服务商；该等
+    传输与处理受各服务商自己的服务条款与隐私政策约束，与开发者无关。
+4.2 内置免费通道（如 Pollinations、OpenRouter、OpenCode Zen 等）由第三方
+    独立运营，开发者不对其可用性、稳定性、数据处理方式或输出内容作任何
+    担保。
+4.3 请勿对高度敏感、涉密或受法律特殊保护的文件使用 AI 功能，除非你确认
+    所配置的服务商满足你的合规要求。
+
+第五条  文件操作与风险
+
+5.1 默认模式下，任何文件移动均须经你逐项确认后才会执行；移动后的文件
+    可在目标位置找回。
+5.2 「Solo 模式」与「回收站」属可选功能，默认关闭，且仅能由你手动开启：
+    开启 Solo 模式即表示你授权本软件按 AI 建议自动移动文件；开启回收站
+    功能即表示你授权 AI 在高度确信时将其判定为无价值的临时文件移入系统
+    回收站（可随时找回）。两项功能的全部后果由你自行承担。
+5.3 AI 的归类与判断可能出错。建议对重要数据保持独立备份。
+
+第六条  免责声明
+
+6.1 本软件按「现状」与「可用状态」提供，不附带任何明示或默示的担保，
+    包括但不限于对适销性、特定用途适用性及不侵权的担保
+    （详见 GPL-3.0 第 15 条）。
+6.2 在适用法律允许的最大范围内，开发者不对因使用或无法使用本软件造成的
+    任何直接、间接、偶然、特殊或后果性损害承担责任，包括但不限于数据
+    丢失、文件误移或业务中断（详见 GPL-3.0 第 16 条）。
+
+第七条  条款变更与终止
+
+7.1 条款更新后将随软件新版本一并发布，并在版本说明中注明；你继续使用
+    新版本即视为接受更新后的条款。
+7.2 你可随时停止使用并删除本软件以终止本条款；第二、三、六条在终止后
+    继续有效。
+
+第八条  其他
+
+8.1 本条款任何条文被认定无效的，不影响其余条文的效力。
+8.2 本条款与许可证（ALE 1.1 与 GPL-3.0）冲突之处，以许可证为准；
+    ALE 1.1 与 GPL-3.0 之间的冲突，以 ALE 1.1 为准。
+
+========================================================================
+ENGLISH VERSION
+========================================================================
+
+Section 1  Definitions and Acceptance
+
+1.1 "The Software" means the Epilogue desktop application and all of its
+    components, released by Wuyilingwei ("the Developer").
+1.2 "You" means any individual or entity that installs, runs, or otherwise
+    uses the Software.
+1.3 By clicking "Agree & start" on first launch you confirm that you have
+    read, understood, and agree to be bound by these Terms; if you do not
+    agree, click "Decline & exit" and discontinue use.
+
+Section 2  License and Open Source
+
+2.1 The Software is released under a dual structure: the ANTI-LABOR
+    EXPLOITATION LICENSE 1.1 (ALE 1.1) together with the GNU General
+    Public License version 3 (GPL-3.0). ALE 1.1 prevails; all rights and
+    freedoms granted under GPL-3.0 are strictly conditional upon your full
+    compliance with ALE 1.1, and any violation of ALE 1.1 automatically
+    suspends all rights granted hereunder.
+2.2 The core of ALE 1.1 is labor-law compliance: its restrictions apply
+    primarily to commercial and employing entities (no inducing waivers of
+    labor rights, no wage withholding, no unlawful overtime, etc.);
+    individuals and compliant entities may use, study, modify, and
+    redistribute without additional restriction.
+2.3 The full license texts (ALE 1.1 and GPL-3.0) are bundled with the
+    Software: Settings -> About -> License.
+2.4 Subject to ALE 1.1 compliance, nothing in these Terms limits or
+    replaces any rights granted to you by GPL-3.0.
+
+Section 3  Data and Privacy
+
+3.1 The Software contains no telemetry, analytics, advertising, or
+    phone-home mechanism; the Developer does not collect, receive, or have
+    any access to your data.
+3.2 All of your settings, index records, and vector data are stored only
+    on your machine (the user-data directory) and can be inspected and
+    cleaned at Settings -> General -> Storage.
+3.3 Audio/video transcription runs on-device by default; audio content
+    never leaves your machine.
+
+Section 4  Third-Party AI Services
+
+4.1 When you use AI features (summaries, filing, recall, assistant chat),
+    file metadata and content excerpts are sent to the third-party AI
+    providers you configure (or the built-in defaults); such transfers and
+    processing are governed by those providers' own terms and privacy
+    policies, independent of the Developer.
+4.2 Built-in free channels (e.g. Pollinations, OpenRouter, OpenCode Zen)
+    are operated independently by third parties; the Developer makes no
+    warranty as to their availability, stability, data handling, or output.
+4.3 Do not use AI features on highly sensitive, confidential, or legally
+    protected files unless you have verified that your configured provider
+    meets your compliance requirements.
+
+Section 5  File Operations and Risk
+
+5.1 In the default mode, every file move requires your item-by-item
+    confirmation before execution; moved files remain retrievable at their
+    destinations.
+5.2 "Solo mode" and the "Trash" capability are optional, disabled by
+    default, and can only be enabled manually by you. Enabling Solo mode
+    authorizes the Software to move files automatically per AI suggestions;
+    enabling Trash authorizes the AI, only when highly confident, to move
+    files it deems worthless temporary artifacts into the system Trash
+    (recoverable at any time). You bear all consequences of enabling either.
+5.3 AI classification and judgment can be wrong. Keep independent backups
+    of important data.
+
+Section 6  Disclaimer
+
+6.1 The Software is provided "AS IS" and "AS AVAILABLE", without warranty
+    of any kind, express or implied, including but not limited to
+    merchantability, fitness for a particular purpose, and non-infringement
+    (see GPL-3.0 Section 15).
+6.2 To the maximum extent permitted by applicable law, the Developer shall
+    not be liable for any direct, indirect, incidental, special, or
+    consequential damages arising from the use of or inability to use the
+    Software, including but not limited to data loss, mis-moved files, or
+    business interruption (see GPL-3.0 Section 16).
+
+Section 7  Changes and Termination
+
+7.1 Updated Terms ship with new versions of the Software and are noted in
+    the release notes; continued use of a new version constitutes
+    acceptance.
+7.2 You may terminate these Terms at any time by ceasing use and deleting
+    the Software; Sections 2, 3, and 6 survive termination.
+
+Section 8  Miscellaneous
+
+8.1 If any provision of these Terms is held invalid, the remaining
+    provisions remain in full force.
+8.2 In case of conflict between these Terms and the licenses (ALE 1.1 and
+    GPL-3.0), the licenses prevail; in case of conflict between ALE 1.1
+    and GPL-3.0, ALE 1.1 prevails.

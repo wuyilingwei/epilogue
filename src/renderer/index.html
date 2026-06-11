@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;" />
+  <title>Epilogue</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="topbar">
+    <div class="brand">
+      <img src="../../logo.svg" alt="" class="brand-logo" />
+      <span class="brand-name">EPILOGUE</span>
+    </div>
+    <div class="nav">
+      <button class="nav-item active" data-view="dashboard" data-i18n="nav_overview"></button>
+      <button class="nav-item" data-view="organize" data-i18n="nav_cleanup"></button>
+      <button class="nav-item" data-view="ask" data-i18n="nav_recall"></button>
+      <button class="nav-item" data-view="assistant" data-i18n="nav_assistant"></button>
+      <button class="nav-item" data-view="settings" data-i18n="nav_settings"></button>
+    </div>
+    <div class="topbar-stats" id="sidebarStats">—</div>
+  </nav>
+
+  <main class="main">
+    <!-- 总览 -->
+    <section class="view active" id="view-dashboard">
+      <div class="hero">
+        <img src="../../logo.svg" alt="" class="hero-logo" />
+        <h1 class="hero-title">EPILOGUE</h1>
+        <p class="hero-tag" data-i18n="desc_overview"></p>
+        <input type="text" id="heroSearch" class="hero-search" data-i18n-ph="hero_search_ph" autocomplete="off" />
+      </div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-num" id="statArchived">0</div><div class="stat-label" data-i18n="stat_archived"></div></div>
+        <div class="stat-card"><div class="stat-num" id="statTracked">0</div><div class="stat-label" data-i18n="stat_tracked"></div></div>
+        <div class="stat-card"><div class="stat-num" id="statDays">0</div><div class="stat-label" data-i18n="stat_installed"></div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h2 data-i18n="recent_title"></h2></div>
+        <ul class="file-list" id="recentList"></ul>
+      </div>
+    </section>
+
+    <!-- 清理 -->
+    <section class="view" id="view-organize">
+      <header class="view-head">
+        <h1>CLEANUP<span class="zh" data-i18n="nav_cleanup"></span></h1>
+        <p class="view-desc" data-i18n="desc_cleanup"></p>
+      </header>
+      <div class="panel">
+        <div class="panel-head"><h2 data-i18n="rules_title"></h2></div>
+        <textarea id="rulesInput" rows="5" data-i18n-ph="rules_ph"></textarea>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h2 data-i18n="cf_title"></h2><button class="btn ghost" id="btnAddCleanupFolder" data-i18n="cf_add"></button></div>
+        <ul class="folder-list" id="cleanupFolderList"></ul>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <h2 data-i18n="dest_title"></h2>
+          <div>
+            <button class="btn ghost" id="btnIndexDest" data-i18n="dest_index_now"></button>
+            <button class="btn ghost" id="btnAddDest" data-i18n="dest_add"></button>
+          </div>
+        </div>
+        <ul class="folder-list" id="destList"></ul>
+        <p class="hint" data-i18n="dest_index_hint"></p>
+      </div>
+      <div class="action-row">
+        <button class="btn primary" id="btnScanStale" data-i18n="act_scan_all"></button>
+        <button class="btn" id="btnScanDir" data-i18n="act_scan_dir"></button>
+        <button class="btn ghost" id="btnPickOrganize" data-i18n="act_pick_files"></button>
+        <span class="hint" id="organizeHint"></span>
+      </div>
+      <div class="panel hidden" id="stalePanel">
+        <div class="panel-head">
+          <h2 data-i18n="stale_title"></h2>
+          <div>
+            <label class="check" style="display:inline-flex"><input type="checkbox" id="staleAll" checked /><span data-i18n="select_all"></span></label>
+            <button class="btn primary" id="btnSuggestStale" style="margin-left:0.8rem" data-i18n="btn_suggest"></button>
+          </div>
+        </div>
+        <table id="staleTable">
+          <thead><tr><th></th><th data-i18n="th_file"></th><th data-i18n="th_idle"></th><th data-i18n="th_size"></th><th data-i18n="th_in"></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="progress-line hidden" id="organizeProgress"><span class="progress-text"></span></div>
+      <div class="panel hidden" id="suggestPanel">
+        <div class="panel-head">
+          <h2 data-i18n="suggest_title"></h2>
+          <button class="btn primary" id="btnApplyMoves" data-i18n="apply_moves"></button>
+        </div>
+        <table id="suggestTable">
+          <thead><tr><th></th><th data-i18n="th_file"></th><th data-i18n="th_dest"></th><th data-i18n="th_reason"></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="panel hidden" id="moveResultPanel">
+        <div class="panel-head"><h2 data-i18n="result_title"></h2></div>
+        <ul class="file-list" id="moveResultList"></ul>
+      </div>
+    </section>
+
+    <!-- 寻物 -->
+    <section class="view" id="view-ask">
+      <header class="view-head">
+        <h1>RECALL<span class="zh" data-i18n="nav_recall"></span></h1>
+        <p class="view-desc" data-i18n="desc_recall"></p>
+      </header>
+      <div class="seg" id="searchModeSeg">
+        <button data-mode="keyword" data-i18n="search_kw"></button>
+        <button data-mode="match" data-i18n="search_match"></button>
+        <button data-mode="ai" data-i18n="search_ai"></button>
+      </div>
+      <form class="ask-bar" id="askForm">
+        <input type="text" id="askInput" data-i18n-ph="ask_ph" autocomplete="off" />
+        <button type="submit" class="btn primary" data-i18n="btn_ask"></button>
+      </form>
+      <div class="ask-status hidden" id="askStatus" data-i18n="searching"></div>
+      <div class="panel hidden" id="answerPanel">
+        <div class="panel-head"><h2 data-i18n="answer_title"></h2><span class="badge gold" id="searchMode"></span></div>
+        <p class="answer-text" id="answerText"></p>
+        <ul class="file-list" id="hitList"></ul>
+      </div>
+
+      <!-- 索引管理（原「索引库」并入寻物） -->
+      <div class="action-row">
+        <button class="btn primary" id="btnIndexFolder" data-i18n="lib_index_folder"></button>
+        <button class="btn" id="btnIndexFiles" data-i18n="lib_index_files"></button>
+        <label class="check"><input type="checkbox" id="recursiveCheck" checked /><span data-i18n="lib_recursive"></span></label>
+      </div>
+      <div class="progress-line hidden" id="indexProgress"><span class="progress-text"></span></div>
+      <div class="panel">
+        <div class="panel-head"><h2 data-i18n="lib_indexed"></h2><input type="search" id="libraryFilter" data-i18n-ph="lib_filter_ph" /></div>
+        <div class="date-filter" id="dateFilter">
+          <span class="hint" data-i18n="date_filter"></span>
+          <span class="mono" id="dateFromLabel"></span>
+          <input type="range" id="dateFrom" min="0" max="100" value="0" />
+          <input type="range" id="dateTo" min="0" max="100" value="100" />
+          <span class="mono" id="dateToLabel"></span>
+        </div>
+        <ul class="file-list" id="libraryList"></ul>
+      </div>
+    </section>
+
+    <!-- 助手 -->
+    <section class="view" id="view-assistant">
+      <header class="view-head">
+        <h1>ASSISTANT<span class="zh" data-i18n="nav_assistant"></span></h1>
+        <p class="view-desc" data-i18n="desc_assistant"></p>
+      </header>
+      <div class="panel chat-panel">
+        <div class="panel-head"><h2 data-i18n="chat_title"></h2><button class="btn ghost" id="btnChatClear" data-i18n="chat_clear"></button></div>
+        <div class="chat-log" id="chatLog"></div>
+        <div class="chat-thinking hidden" id="chatThinking" data-i18n="chat_thinking"></div>
+        <form class="chat-bar" id="chatForm">
+          <textarea id="chatInput" rows="2" data-i18n-ph="chat_ph"></textarea>
+          <button type="submit" class="btn primary" id="chatSend" data-i18n="chat_send"></button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 设置 -->
+    <section class="view" id="view-settings">
+      <header class="view-head">
+        <h1>SETTINGS<span class="zh" data-i18n="nav_settings"></span></h1>
+        <p class="view-desc" data-i18n="desc_settings"></p>
+      </header>
+
+      <div class="settings-tabs">
+        <button class="tab-btn active" data-tab="general" data-i18n="tab_general"></button>
+        <button class="tab-btn" data-tab="capabilities" data-i18n="tab_capabilities"></button>
+        <button class="tab-btn" data-tab="extraction" data-i18n="tab_extraction"></button>
+        <button class="tab-btn" data-tab="about" data-i18n="tab_about"></button>
+      </div>
+
+      <div class="tab-page" id="tab-general">
+        <div class="panel">
+          <div class="panel-head"><h2 data-i18n="app_title"></h2><span class="badge" id="powerBadge"></span></div>
+          <div class="app-prefs">
+            <label class="check"><span data-i18n="language_label"></span>
+              <select id="prefLanguage"><option value="zh">中文</option><option value="en">English</option></select>
+            </label>
+            <label class="check"><input type="checkbox" id="prefLogin" /><span data-i18n="pref_login"></span></label>
+            <label class="check"><input type="checkbox" id="prefTray" /><span data-i18n="pref_tray"></span></label>
+            <label class="check"><input type="checkbox" id="prefAutoScan" /><span data-i18n="pref_autoscan"></span></label>
+            <label class="check"><input type="checkbox" id="prefSolo" /><span data-i18n="pref_solo"></span></label>
+            <label class="check"><input type="checkbox" id="prefTrash" /><span data-i18n="pref_trash"></span></label>
+            <label class="check"><span data-i18n="every"></span> <input type="number" id="prefInterval" class="days-input" min="1" /> <span data-i18n="hours_scan"></span></label>
+            <label class="check"><span data-i18n="global_days"></span> <input type="number" id="staleDaysGlobal" class="days-input" min="1" /></label>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2 data-i18n="opt_title"></h2></div>
+          <div class="app-prefs">
+            <label class="check"><input type="checkbox" id="prefLowPower" /><span data-i18n="pref_lowpower"></span></label>
+            <label class="check"><input type="checkbox" id="prefMetered" /><span data-i18n="pref_metered"></span></label>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2 data-i18n="sto_title"></h2><button class="btn ghost" id="btnStoRefresh" data-i18n="sto_refresh"></button></div>
+          <ul class="folder-list" id="stoList"></ul>
+          <p class="hint" data-i18n="sto_hint"></p>
+        </div>
+
+      </div>
+
+      <div class="tab-page hidden" id="tab-capabilities">
+        <div class="panel">
+          <div class="panel-head"><h2 data-i18n="prov_chat"></h2><button class="btn ghost" data-add-provider="chat" data-i18n="prov_add"></button></div>
+          <div class="provider-list" id="providers-chat"></div>
+          <p class="hint" data-i18n="drag_hint"></p>
+          <p class="hint" data-i18n="prov_hint_chat"></p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2 data-i18n="prov_emb"></h2><button class="btn ghost" data-add-provider="embeddings" data-i18n="prov_add"></button></div>
+          <div class="provider-list" id="providers-embeddings"></div>
+          <p class="hint" data-i18n="prov_hint_emb"></p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2 data-i18n="img_title"></h2></div>
+          <div class="provider-list" id="imgModelList"></div>
+          <div class="app-prefs" style="margin-top:0.6rem">
+            <label class="check"><input type="checkbox" id="imgEnabled" disabled /><span data-i18n="img_enable"></span></label>
+            <label class="check"><input type="checkbox" id="imgGpu" /><span data-i18n="img_gpu"></span></label>
+          </div>
+          <p class="hint" data-i18n="img_hint"></p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2 data-i18n="prov_whisper"></h2><button class="btn ghost" data-add-provider="transcription" data-i18n="prov_add"></button></div>
+          <div class="provider-list" id="providers-transcription"></div>
+          <p class="hint" data-i18n="prov_hint_whisper"></p>
+        </div>
+      </div>
+
+      <div class="tab-page hidden" id="tab-extraction">
+        <div class="panel">
+          <div class="panel-head"><h2 data-i18n="ext_title"></h2></div>
+          <div class="form-grid ext-grid">
+            <label><span data-i18n="ext_office_mode"></span>
+              <select id="extOfficeMode">
+                <option value="full" data-i18n="ext_mode_full"></option>
+                <option value="head" data-i18n="ext_mode_head"></option>
+              </select>
+            </label>
+            <label><span data-i18n="ext_xlsx_mode"></span>
+              <select id="extXlsxMode">
+                <option value="full" data-i18n="ext_xlsx_full"></option>
+                <option value="headers" data-i18n="ext_xlsx_headers"></option>
+              </select>
+            </label>
+            <label><span data-i18n="ext_pdf_pages"></span><input type="number" id="extPdfPages" min="1" /></label>
+            <label><span data-i18n="ext_max_chars"></span><input type="number" id="extMaxChars" min="500" step="500" /></label>
+            <label><span data-i18n="ext_stt_secs"></span><input type="number" id="extSttSecs" min="30" step="30" /></label>
+          </div>
+          <p class="hint" data-i18n="ext_hint"></p>
+        </div>
+      </div>
+
+      <div class="tab-page hidden" id="tab-about">
+        <div class="panel about-panel">
+          <img src="../../logo.svg" alt="" class="about-logo" />
+          <h1 class="about-name">EPILOGUE</h1>
+          <p class="about-desc" data-i18n="about_desc"></p>
+          <div class="about-meta">
+            <span class="about-meta-label" data-i18n="about_version"></span>
+            <span class="mono" id="aboutVersion">—</span>
+          </div>
+          <div class="about-actions">
+            <button class="btn ghost" id="btnViewTos" data-i18n="btn_view_tos"></button>
+            <button class="btn ghost" id="btnViewLicense" data-i18n="btn_view_license"></button>
+          </div>
+          <p class="hint about-license" data-i18n="about_license"></p>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <span class="hint" id="saveHint"></span>
+      </div>
+    </section>
+  </main>
+
+  <!-- 首次启动 ToS -->
+  <div class="tos-overlay hidden" id="tosOverlay">
+    <div class="tos-dialog">
+      <h1>EPILOGUE<span class="doc-title" id="docTitle"></span></h1>
+      <div class="tos-body">
+        <pre id="docText" class="doc-text"></pre>
+      </div>
+      <div class="tos-actions">
+        <button class="btn" id="tosDecline" data-i18n="tos_decline"></button>
+        <button class="btn primary" id="tosAccept" data-i18n="tos_accept"></button>
+        <button class="btn hidden" id="tosClose" data-i18n="tos_close"></button>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/locales.js"></script>
+  <script src="../shared/imageModels.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

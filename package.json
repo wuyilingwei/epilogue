@@ -1,7 +1,7 @@
 {
   "name": "epilogue",
   "productName": "Epilogue",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Epilogue — AI file workflow: understand, organize and recall your files.",
   "main": "src/main/index.js",
   "license": "SEE LICENSE IN LICENSE",

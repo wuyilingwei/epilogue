@@ -42,7 +42,8 @@ async function indexFile(filePath, store, onProgress = () => {}, { manual = fals
   const cfg = settings.get();
   const fileName = path.basename(filePath);
   const stat = fs.statSync(filePath);
-  if (stat.size > MAX_FILE_SIZE) throw new Error('文件超过 2GB，跳过');
+  // 超大文件不抛错：降级为文件名索引（不读内容），仍可凭文件名/目录归类与检索
+  if (stat.size > MAX_FILE_SIZE) nameOnly = true;
 
   // 1. 提取文本（media 走 whisper）；nameOnly：只索引文件名，不读内容（云占位文件读内容会触发下载）
   const kind = kindOf(filePath);
@@ -186,7 +187,8 @@ async function indexDestinations(store, { onProgress = () => {}, limit = 50 } = 
       }
       const wantFull = contentAllowed && (!isCloud(f) || cloudAllowed);
       const existing = store.get(f);
-      if (existing && !(existing.indexedMode === 'name' && wantFull)) continue; // 已满足（或无需升级），跳过
+      // 已满足（或无需升级）跳过；超大文件永远只能 name 索引，不反复尝试升级
+      if (existing && !(existing.indexedMode === 'name' && wantFull && existing.sizeBytes <= MAX_FILE_SIZE)) continue;
       budget--;
       try {
         await indexFile(f, store, onProgress, { nameOnly: !wantFull });

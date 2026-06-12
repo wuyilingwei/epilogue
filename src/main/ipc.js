@@ -222,22 +222,30 @@ function register(getWindow, hooks = {}) {
     const s = getStore();
     const norm = items.map((i) => (typeof i === 'string' ? { filePath: i } : i));
     const records = [];
+    const failed = []; // 单文件索引失败不阻塞整批：以「无目标+原因」行返回
     for (let i = 0; i < norm.length; i++) {
       let r = s.get(norm[i].filePath);
       if (!r) {
         progress('index:progress')({ current: i + 1, total: norm.length, file: path.basename(norm[i].filePath), stage: '先索引…' });
         await lazy.indexer.yieldLoop(); // 进度先投递再干活
-        r = await lazy.indexer.indexFile(
-          norm[i].filePath,
-          s,
-          (p) => progress('index:progress')({ current: i + 1, total: norm.length, ...p }),
-          { manual: true } // 手动归类不受电池暂缓限制
-        );
+        try {
+          r = await lazy.indexer.indexFile(
+            norm[i].filePath,
+            s,
+            (p) => progress('index:progress')({ current: i + 1, total: norm.length, ...p }),
+            { manual: true } // 手动归类不受电池暂缓限制
+          );
+        } catch (e) {
+          require('./log').log('classify', `index failed, skipped: ${path.basename(norm[i].filePath)}`, { error: String(e.message || e).slice(0, 200) });
+          failed.push({ filePath: norm[i].filePath, fileName: path.basename(norm[i].filePath), move: false, reason: `索引失败：${e.message}` });
+          continue;
+        }
       }
       records.push({ ...r, rulesOverride: norm[i].rules || null });
     }
     // AI 归类阶段也推进度（替代渲染层干等「分析文件内容…」）
-    return lazy.classifier.suggest(records, (p) => progress('index:progress')(p));
+    const out = records.length ? await lazy.classifier.suggest(records, (p) => progress('index:progress')(p)) : [];
+    return [...out, ...failed];
   });
   ipcMain.handle('classify:apply', (_e, moves) => lazy.classifier.applyMoves(moves, getStore()));
 
